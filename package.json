@@ -1,0 +1,27 @@
+{
+  "name": "genme-sc",
+  "version": "0.0.1",
+  "description": "A Readme and file scaffold generator",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kurohyou/genme-SC.git"
+  },
+  "keywords": [
+    "readme"
+  ],
+  "author": "Scott Casey",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Kurohyou/genme-SC/issues"
+  },
+  "homepage": "https://github.com/Kurohyou/genme-SC#readme",
+  "dependencies": {
+    "inquirer": "^9.1.0",
+    "mustache": "^4.2.0"
+  }
+}
