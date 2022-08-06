@@ -1,6 +1,6 @@
 import * as fs from 'node:fs/promises';
 import path from 'path';
-import inquirer from './node_modules/inquirer/lib/inquirer.js';
+import inquirer from 'inquirer';
 import { fileURLToPath } from 'url';
 import Mustache from 'mustache';
 const __filename = fileURLToPath(import.meta.url);
@@ -12,19 +12,61 @@ const genericValidate = (answers)=>{
 };
 const waitUserInput = false;
 
-const readmeContent = {
-  about:'',
-  start:'',
-  usage:'',
-  roadmap:'',
-  contributing:'',
-  license:'',
-  contact:'',
-};
+const projectTemplates = {
+  charsheet:{
+    presets:{
+      root:['README.md','license.txt','assets','source'],
+      license:'mit',
+      assets:['assets/images'],
+      source:['source/scss','source/pug','source/js'],
+      readme:['about','start','usage','roadmap','contributing','contact','acknowledgements','patreon','linkedin'],
+      gitUserName:'Kurohyou',
+      patreonName:'kurohyoustudios',
+      linkedInName:'Kurohyou',
+      noissues:true
+    }
+  },
+  basic:{
+    presets:{
+      root:['README.md','license.txt','assets','source','index.html'],
+      assets:['assets/js','assets/html','assets/css','assets/images'],
+      readme:['about','start','usage','roadmap','contributing','contact','acknowledgements','patreon','linkedin'],
+      gitUserName:'Kurohyou',
+      patreonName:'kurohyoustudios',
+      linkedInName:'Kurohyou'
+    }
+  },
+  node:{
+    presets:{
+      root:['index.js','README.md','license.txt','assets','source'],
+      assets:['assets/images'],
+      readme:['about','start','usage','roadmap','contributing','contact','acknowledgements','patreon','linkedin'],
+      gitUserName:'Kurohyou',
+      patreonName:'kurohyoustudios',
+      linkedInName:'Kurohyou'
+    }
+  },
+}
 
 const checkWhen = (answers,key,value) => answers[key]?.indexOf(value) > -1;
 
-const queryRoots = ()=>{
+const queryRoots = async ()=>{
+  const templateResponse = await inquirer.prompt(
+    {
+      waitUserInput,
+      type:'list',
+      message:'Use a project template?',
+      name:'template',
+      choices:[
+        {name:'Roll20 Character Sheet',value:'charsheet'},
+        {name:'Basic Site',value:'basic'},
+        {name:'Node Project',value:'node'},
+        {name:'Custom',value:'custom'}
+      ]
+    }
+  );
+  const selectedTemplate = templateResponse.template;
+  const preAnswers = {year:(new Date()).getFullYear,...templateResponse,...(projectTemplates[selectedTemplate]?.presets || {})};
   return inquirer.prompt(
     [
       {
@@ -47,7 +89,6 @@ const queryRoots = ()=>{
       },
       {
         when:(answers)=>checkWhen(answers,'root','license.txt'),
-        validate:genericValidate,
         type:'list',
         message:'Which license do you want to use',
         name:'license',
@@ -68,6 +109,19 @@ const queryRoots = ()=>{
           {name:'html',value:'assets/html',checked:true},
           {name:'css',value:'assets/css',checked:true},
           {name:'images',value:'assets/images',checked:true},
+        ]
+      },
+      {
+        waitUserInput,
+        when:(answers)=>checkWhen(answers,'root','source'),
+        type:'checkbox',
+        message:'Which asset directories do you want to create',
+        name:'source',
+        choices:[
+          {name:'js',value:'source/js',checked:true},
+          {name:'html',value:'source/html',checked:true},
+          {name:'css',value:'source/css',checked:true},
+          {name:'images',value:'source/images',checked:true},
         ]
       },
 
@@ -109,7 +163,7 @@ const queryRoots = ()=>{
       {
         when:(answers)=>checkWhen(answers,'root','README.md'),
         validate:(answers) => 
-          /\s+/.test(answers.gitUserName) ?
+          /\s+/.test(answers.repositoryName) ?
             'Git repository names should not have spaces in them' :
             true,
         type:'input',
@@ -182,10 +236,31 @@ const queryRoots = ()=>{
       },
       {
         when:(answers)=>checkWhen(answers,'readme','contact'),
-        type:'input',
+        type:'checkbox',
         message:'How should users contact you',
         name:'contact',
-        default:'TODO'
+        choices:[
+          {name:'Twitter',value:'twitter',checked:true},
+          {name:'Email',vlaue:'email',checked:true}
+        ]
+      },
+      {
+        when:(answers)=>answers.license || answers.contact,
+        type:'input',
+        message:'Comma separated list of the author(s)',
+        name:'authorName',
+      },
+      {
+        when:(answers)=>checkWhen(answers,'contact','twitter'),
+        type:'input',
+        message:'Author Twitter handles (comma separated list, in order author names were given)',
+        name:'twitter'
+      },
+      {
+        when:(answers)=>checkWhen(answers,'contact','twitter'),
+        type:'input',
+        message:'Author Emails (comma separated list, in order author names were given)',
+        name:'email'
       },
       {
         when:(answers)=>checkWhen(answers,'readme','acknowledgments'),
@@ -209,10 +284,10 @@ const queryRoots = ()=>{
         default:'Kurohyou'
       }
     ]
-  );
+  ,preAnswers);
 };
 
-const createDir = (pathString) => fs.mkDir(path.resolve(__dirname,pathString));
+const createDir = (pathString) => fs.mkdir(path.resolve(__dirname,pathString),{recursive:true});
 
 const createFile = (pathString) => fs.open(path.resolve(__dirname,pathString),'w+');
 
@@ -236,7 +311,20 @@ const createReadme = async (data) => {
       .map(item => `- ${item}`)
       .join('\n');
   }
-  const content = Mustache.render(template,data);
+  if(keys.contact && keys.authorName){
+    const nameArray = keys.authorName.split(',');
+    const twitArray = keys.twitter?.split(',') || [];
+    const emailArray = keys.email?.split(',') || [];
+    const authors = nameArray.map((name,i)=>{
+      return {
+        name,
+        twitter:twitArray[i] || undefined,
+        email:emailArray[i] || undefined
+      }
+    });
+    keys.authors = authors;
+  }
+  const content = Mustache.render(template,keys);
   await readme.writeFile(content);
   readme.close();
 };
@@ -245,16 +333,20 @@ const createLicense = async (data) => {
   if(!data.license) return;
   const license = await createFile('license.txt');
   const template = await fs.readFile(path.resolve(__dirname,`templates/${data.license}.template`),{encoding:'utf8'});
-  return license.writeFile(template);
+  license.writeFile(template);
+  license.close();
 };
 
 const createSubs = async (data) => {
-
+  const paths = data.root.filter(p => !/\..+$/.test(p));
+  for await (const thisPath of paths){
+    const dirHandle = await createDir(thisPath);
+    paths.push(...(data[thisPath]||[]));
+  }
 };
 
 const initiateQuery = async ()=>{
   const selected = await queryRoots();
-  console.log(selected);
   await Promise.all([
     createReadme(selected),
     createLicense(selected),

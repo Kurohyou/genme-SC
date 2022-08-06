@@ -113,8 +113,9 @@
 
 ## Roadmap
 {{roadmap}}
-
+{{^noissues}}
 See the [open issues](https://github.com/{{gitUserName}}/{{repositoryName}}/issues) for a full list of proposed features (and known issues).
+{{/noissues}}
 <p align="right">(<a href="#top">back to top</a>)</p>
 {{/roadmap}}
 {{#contributing}}
@@ -142,7 +143,10 @@ Distributed under the {{license}} License. See [LICENSE.txt](LICENSE.txt) for mo
 <!-- CONTACT -->
 
 ## Contact
-Scott Casey - [@Kurohyoustudios](https://twitter.com/Kurohyoustudios) - scaseydv@gmail.com
+{{#authors}}
+
+  {{name}}{{#twitter}} - [@{{twitter}}](https://twitter.com/{{twitter}}){{/twitter}}{{#email}} - {{email}}{{/email}}
+{{/authors}}{{^authors}}TODO:{{/authors}}
 
 Project Link: [https://github.com/{{gitUserName}}/{{repositoryName}}](https://github.com/{{gitUserName}}/{{repositoryName}})
 <p align="right">(<a href="#top">back to top</a>)</p>
