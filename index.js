@@ -236,7 +236,7 @@ const queryRoots = async ()=>{
         default:'TODO'
       },
       {
-        when:(answers)=>checkWhen(answers,'readme','contact'),
+        when:(answers)=>answers.authorName?.toLowerCase() !== 'todo' && checkWhen(answers,'readme','contact'),
         type:'checkbox',
         message:'How should users contact you',
         name:'contact',
@@ -312,19 +312,23 @@ const createReadme = async (data) => {
       .map(item => `- ${item}`)
       .join('\n');
   }
-  if(keys.contact && keys.authorName){
-    const nameArray = keys.authorName.split(',');
-    const twitArray = keys.twitter?.split(',') || [];
-    const emailArray = keys.email?.split(',') || [];
-    const authors = nameArray.map((name,i)=>{
-      return {
-        name,
-        twitter:twitArray[i] || undefined,
-        email:emailArray[i] || undefined
-      }
-    });
-    keys.authors = authors;
+  if(keys.contact){
+    keys.contact = true;
+    if(keys.authorName){
+      const nameArray = keys.authorName.split(',');
+      const twitArray = keys.twitter?.split(',') || [];
+      const emailArray = keys.email?.split(',') || [];
+      const authors = nameArray.map((name,i)=>{
+        return {
+          name,
+          twitter:twitArray[i] || undefined,
+          email:emailArray[i] || undefined
+        }
+      });
+      keys.authors = authors;
+    }
   }
+  console.log('keys',keys);
   const content = Mustache.render(template,keys);
   await readme.writeFile(content);
   readme.close();
