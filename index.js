@@ -94,8 +94,9 @@ const queryRoots = async ()=>{
         name:'license',
         choices:[
           {name:'Nevermind',value:''},
-          {name:'MIT',value:'mit'},
-          {name:'GPL-3',value:'gpl-3'}
+          {name:'Apache 2.0',value:'apache-2.0'},
+          {name:'GNU General Public License 3.0',value:'gpl-3.0'},
+          {name:'MIT',value:'mit'}
         ]
       },
       {
@@ -115,7 +116,7 @@ const queryRoots = async ()=>{
         waitUserInput,
         when:(answers)=>checkWhen(answers,'root','source'),
         type:'checkbox',
-        message:'Which asset directories do you want to create',
+        message:'Which source directories do you want to create',
         name:'source',
         choices:[
           {name:'js',value:'source/js',checked:true},
@@ -331,9 +332,17 @@ const createReadme = async (data) => {
 
 const createLicense = async (data) => {
   if(!data.license) return;
-  const license = await createFile('license.txt');
-  const template = await fs.readFile(path.resolve(__dirname,`templates/${data.license}.template`),{encoding:'utf8'});
-  license.writeFile(template);
+  const templateConversions = {
+    'yyyy':'year',
+    'fullname':'authorName',
+    'name of copyright owner':'authorName'
+  }
+  const license = await createFile('LICENSE.txt');
+  const template = await fetch(`https://gitlab.com/api/v4/templates/licenses/${data.license}?project=My+Cool+Project`)
+    .then(response => response.json())
+    .then(response => response.content.replace(/\[(.+?)\]/g,(match,key)=>`{{${templateConversions[key]||key}}}`));
+  const content = Mustache.render(template,data);
+  license.writeFile(content);
   license.close();
 };
 

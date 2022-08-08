@@ -12,10 +12,10 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-<h3 align="center">Genme!</h3>
+<h3 align="center">genMe!</h3>
 <p align="center">
 
-A project directory and readme initializer for high quality starts to projects.
+A CLI to initialize project folders with high quality documentation and folder structure
 
 
 <a href="https://github.com/Kurohyou/genme-SC"><strong>Explore the docs »</strong></a>
@@ -58,16 +58,16 @@ TODO
 
 ### Built With
 - JS
-- NODE
-- Initializer
+- Node
+- Inquirer
 - {{ Mustache }}
 <p align="right">(<a href="#top">back to top</a>)</p>
 <!-- GETTING STARTED -->
 
 ## Getting Started
-TODO
+Install the module using npm
 ### Prerequisites
-Node
+Node,Inquirer,NPM
 <p align="right">(<a href="#top">back to top</a>)</p>
 <!-- USAGE EXAMPLES -->
 
@@ -77,7 +77,7 @@ true
 <!-- ROADMAP -->
 
 ## Roadmap
-Custom file and project templates
+Custom project templates. Custom creation templates
 See the [open issues](https://github.com/Kurohyou/genme-SC/issues) for a full list of proposed features (and known issues).
 <p align="right">(<a href="#top">back to top</a>)</p>
 <!-- CONTRIBUTING -->
@@ -118,7 +118,7 @@ Project Link: [https://github.com/Kurohyou/genme-SC](https://github.com/Kurohyou
 <!-- ACKNOWLEDGMENTS -->
 
 ## Acknowledgments
-UofU Full Stack Bootcamp
+UofU Fullstack Bootcamp
 This readme template adapted from the [Best-README-Template](https://github.com/othneildrew/Best-README-Template/blob/master/BLANK_README.md) by [Othneil Drew](https://github.com/othneildrew).
 <p align="right">(<a href="#top">back to top</a>)</p>
 <!-- MARKDOWN LINKS & IMAGES -->
