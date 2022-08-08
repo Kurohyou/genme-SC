@@ -328,7 +328,6 @@ const createReadme = async (data) => {
       keys.authors = authors;
     }
   }
-  console.log('keys',keys);
   const content = Mustache.render(template,keys);
   await readme.writeFile(content);
   readme.close();
