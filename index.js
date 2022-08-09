@@ -3,6 +3,7 @@ import path from 'path';
 import inquirer from 'inquirer';
 import { fileURLToPath } from 'url';
 import Mustache from 'mustache';
+import axios from 'axios';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const genericValidate = (answers)=>{
@@ -341,9 +342,9 @@ const createLicense = async (data) => {
     'name of copyright owner':'authorName'
   }
   const license = await createFile('LICENSE.txt');
-  const template = await fetch(`https://gitlab.com/api/v4/templates/licenses/${data.license}?project=My+Cool+Project`)
-    .then(response => response.json())
-    .then(response => response.content.replace(/\[(.+?)\]/g,(match,key)=>`{{${templateConversions[key]||key}}}`));
+  // Idea to use axios and the gitlab license api from Jerrod
+  const template = await axios(`https://gitlab.com/api/v4/templates/licenses/${data.license}`)
+    .then(response => response.data.content.replace(/\[([^\]]+)\]/g,(match,key)=>`{{${templateConversions[key]||key}}}`));
   const content = Mustache.render(template,data);
   license.writeFile(content);
   license.close();
