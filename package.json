@@ -1,5 +1,5 @@
 {
-  "name": "genme-sc",
+  "name": "@your_npm_username/genme",
   "version": "0.0.1",
   "description": "A Readme and file scaffold generator",
   "main": "index.js",
@@ -11,7 +11,15 @@
     "type": "git",
     "url": "git+https://github.com/Kurohyou/genme-SC.git"
   },
+  "bin": {
+    "genme!": "./index.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
+    "cli",
+    "genme!",
     "readme"
   ],
   "author": "Scott Casey",
@@ -23,6 +31,7 @@
   "dependencies": {
     "axios": "^0.27.2",
     "inquirer": "^9.1.0",
-    "mustache": "^4.2.0"
+    "mustache": "^4.2.0",
+    "parse-git-config": "^3.0.0"
   }
 }

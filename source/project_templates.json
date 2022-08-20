@@ -1,0 +1,61 @@
+{
+  "Roll20 Character Sheet":{
+    "presets":{
+      "root":["README.md","license.txt","assets","source"],
+      "license":"mit",
+      "assets":["assets/images"],
+      "source":["source/scss","source/pug","source/js"],
+      "readme":["about","start","usage","roadmap","contributing","contact","acknowledgements","tests","patreon","linkedin"],
+      "gitUserName":"Kurohyou",
+      "patreonName":"kurohyoustudios",
+      "linkedInName":"Kurohyou",
+      "noissues":true,
+      "authorName":"Scott Casey",
+      "email":"scaseydv@gmail.com",
+      "twitter":"Kurohyoustudios",
+      "contact":["twitter","email"]
+    }
+  },
+  "Basic Site":{
+    "presets":{
+      "root":["README.md","license.txt","assets","source","index.html"],
+      "assets":["assets/js","assets/html","assets/css","assets/images"],
+      "readme":["about","start","usage","roadmap","contributing","contact","acknowledgements","tests","patreon","linkedin"],
+      "gitUserName":"Kurohyou",
+      "patreonName":"kurohyoustudios",
+      "linkedInName":"Kurohyou",
+      "authorName":"Scott Casey",
+      "email":"scaseydv@gmail.com",
+      "twitter":"Kurohyoustudios",
+      "contact":["twitter","email"]
+    }
+  },
+  "Node Module":{
+    "presets":{
+      "root":["index.js","README.md","license.txt","assets","source"],
+      "assets":["assets/images"],
+      "readme":["about","start","usage","roadmap","contributing","contact","acknowledgements","tests","patreon","linkedin"],
+      "gitUserName":"Kurohyou",
+      "patreonName":"kurohyoustudios",
+      "linkedInName":"Kurohyou",
+      "authorName":"Scott Casey",
+      "email":"scaseydv@gmail.com",
+      "twitter":"Kurohyoustudios",
+      "contact":["twitter","email"]
+    }
+  },
+  "Server Project":{
+    "presets":{
+      "root":["server.js","README.md","license.txt","assets","source","db"],
+      "assets":["assets/images"],
+      "readme":["about","start","usage","roadmap","contributing","contact","acknowledgements","tests","patreon","linkedin"],
+      "gitUserName":"Kurohyou",
+      "patreonName":"kurohyoustudios",
+      "linkedInName":"Kurohyou",
+      "authorName":"Scott Casey",
+      "email":"scaseydv@gmail.com",
+      "twitter":"Kurohyoustudios",
+      "contact":["twitter","email"]
+    }
+  }
+}

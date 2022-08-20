@@ -59,6 +59,9 @@
 {{#usage}}
 <li><a href="#usage">Usage</a></li>
 {{/usage}}
+{{#tests}}
+<li><a href="#tests">Tests</a></li>
+{{/tests}}
 {{#roadmap}}
 <li><a href="#roadmap">Roadmap</a></li>
 {{/roadmap}}
@@ -108,6 +111,12 @@
 {{usage}}
 <p align="right">(<a href="#top">back to top</a>)</p>
 {{/usage}}
+{{#tests}}
+<!-- ROADMAP -->
+
+## Tests
+{{tests}}
+{{/tests}}
 {{#roadmap}}
 <!-- ROADMAP -->
 
