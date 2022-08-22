@@ -57,5 +57,30 @@
       "twitter":"Kurohyoustudios",
       "contact":["twitter","email"]
     }
+  },
+  "Worldsmith":{
+    "presets":{
+      "root":["README.md"],
+      "readme":["about","start","usage","roadmap","contributing","contact","acknowledgements","tests","patreon","linkedin"],
+      "gitUserName":"Kurohyou",
+      "patreonName":"kurohyoustudios",
+      "linkedInName":"Kurohyou",
+      "authorName":"Scott Casey",
+      "email":"scaseydv@gmail.com",
+      "twitter":"Kurohyoustudios",
+      "contact":["twitter","email"],
+      "projectName":"Worldsmith Web",
+      "logo":"TODO",
+      "projectDescription":"A web interface for Artifexian's Worldsmith google sheet",
+      "aboutBlurb":"TODO",
+      "builtList":"TODO",
+      "startBlurb":"TODO",
+      "prerequisites":"",
+      "installation":"TODO",
+      "usage":"TODO",
+      "tests":"TODO",
+      "roadmap":"TODO",
+      "acknowledgments":"- Artifexian"
+    }
   }
 }

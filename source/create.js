@@ -11,10 +11,12 @@ const createDir = (pathString) => fs.mkdir(path.resolve(pathString),{recursive:t
 const createFile = (pathString) => fs.open(path.resolve(pathString),'w+');
 
 export const readme = async (data) => {
+  // debugger;
   if(!data.readme) return;
+  console.log('data',data);
   const keys = {...data};
   data.readme.forEach(key => keys[key] = keys[key] || true);
-  const readme = await createFile('README.md');
+  const readmeFileHandle = await createFile('README.md');
   let template = await fs.readFile(path.resolve(__dirname,'./templates/readme.md'),{encoding:'utf8'});
   if(keys.builtList){
     keys.builtList = keys.builtList
@@ -39,8 +41,8 @@ export const readme = async (data) => {
     }
   }
   const content = Mustache.render(template,keys);
-  await readme.writeFile(content);
-  readme.close();
+  await readmeFileHandle.writeFile(content);
+  readmeFileHandle.close();
 };
 
 export const license = async (data) => {
@@ -50,13 +52,13 @@ export const license = async (data) => {
     'fullname':'authorName',
     'name of copyright owner':'authorName'
   }
-  const license = await createFile('LICENSE.txt');
+  const licenseFileHandle = await createFile('LICENSE.txt');
   // Idea to use axios and the gitlab license api from Jerrod
   const template = await axios(`https://gitlab.com/api/v4/templates/licenses/${data.license}`)
     .then(response => response.data.content.replace(/\[([^\]]+)\]/g,(match,key)=>`{{${templateConversions[key]||key}}}`));
   const content = Mustache.render(template,data);
-  license.writeFile(content);
-  license.close();
+  licenseFileHandle.writeFile(content);
+  licenseFileHandle.close();
 };
 
 export const misc = async (data) => {
